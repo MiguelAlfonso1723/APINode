@@ -2,9 +2,9 @@ import Singer from '../models/company.mjs'
 
 async function getAll(req,res){
    try{
-      const singer = new Singer.find()
+      const result = await Singer.find({})
 
-
+      return res.status(200).json({"state":true,"data":result})
       //return res.status(200).json({"state":true,"data:"{"id":id,"name":name,"country":country}}) 
     }catch(error){
       return res.status(500).json({"state":false,"message":error.message})
@@ -14,9 +14,15 @@ async function getAll(req,res){
 
 
 
-  async function findById(req,res){
+  async function getById(req,res){
     const {id} = req.params
-    return res.status(200).json({'state':true,data:id})
+    try{
+      const result = await Singer.findById(id)
+      return res.status(200).json({"state":true,"data":result})
+    }catch(err){
+      return res.status(500).json({"state":false, "error":err.message})
+    }
+    
   }
 
   async function save(req,res){
@@ -24,16 +30,15 @@ async function getAll(req,res){
 
     try{
       const singer = new Singer({id,name,country})
-      return res.status(200).json({'state':true,'data':singer})
       const result = await singer.save()
-
-
-      //return res.status(200).json({"state":true,"data:"{"id":id,"name":name,"country":country}}) 
+      return res.status(200).json({'state':true,'data':result})
+      
+      //return res.status(200).json({"state":true,"data":{"id":id,"name":name,"country":country}}) 
     }catch(error){
       return res.status(500).json({"state":false,"message":error.message})
 
     }
-    
+    return res.status(200).json({"state":true,"data":{"id":id,"name":name,"country":country}}) 
   }
 
   async function actualize(req,res){
@@ -43,7 +48,7 @@ async function getAll(req,res){
   }
   export{
     getAll,
-    findById,
+    getById,
     save,
     actualize
   }

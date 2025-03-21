@@ -19,8 +19,8 @@ const ProductSchema = new Schema({
     },
     company:{
         type: Schema.Types.ObjectId,
-        ref: 'Company'
+        ref: 'company'
     }
 })
 
-export default mongoose.model('Product', ProductSchema)
+export default mongoose.model('product', ProductSchema)
