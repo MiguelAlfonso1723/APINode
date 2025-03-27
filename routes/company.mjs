@@ -82,9 +82,8 @@ const route = express.Router()
  *                 
  */
 route.get('/',getAll)
-<<<<<<< Updated upstream
+
 route.get('/:id',findById)
-=======
 
 /**
  * @swagger
