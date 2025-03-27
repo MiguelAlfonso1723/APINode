@@ -228,7 +228,7 @@ route.get('/:id',getById)
  *                               
  *                                               
  */
->>>>>>> Stashed changes
+
 route.post('/',save)
 route.put('/:idn', actualize)
 
