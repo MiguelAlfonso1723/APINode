@@ -13,7 +13,21 @@ const CompanySchema = new Schema({
         type: String,
         required: true
     },
-    country:{
+    founded:{
+        type: Date,
+        required: true
+    },
+    employees:{
+        type: Number,
+        required: false,
+        default: 1000
+    },
+    anualRevenue:{
+        type: Number,
+        required: false,
+        default: 100000
+    },
+    headquarters:{
         type: String,
         required: true
     },
