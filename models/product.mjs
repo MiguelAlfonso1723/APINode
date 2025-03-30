@@ -2,11 +2,6 @@ import mongoose from "mongoose"
 
 const {Schema} = mongoose
 
-const productItems = {
-    discriminatorKey: 'productType',
-    collection: 'items'
-}
-
 const ProductSchema = new Schema({
     id:{
         type :Number,
@@ -40,7 +35,7 @@ const ProductSchema = new Schema({
         default: 1500
     }
     
-}, productItems);
+});
 
 const Product = mongoose.model('product', ProductSchema)
 
@@ -109,4 +104,10 @@ const ClothingProduct = Product.discriminator('Clothing', new Schema({
     }
 }))
 
-export default Product
+export {
+    Product,
+    ElectronicsProduct,
+    FoodProduct,
+    AutomotiveProduct,
+    ClothingProduct
+}

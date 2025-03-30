@@ -13,6 +13,18 @@ const CompanySchema = new Schema({
         type: String,
         required: true
     },
+    industry:{
+        type: String,
+        required: true
+    },
+    numberIndustry:{
+        type: Number,
+        required: true
+    },
+    headquarters:{
+        type: String,
+        required: true
+    },
     founded:{
         type: Date,
         required: true
@@ -26,10 +38,6 @@ const CompanySchema = new Schema({
         type: Number,
         required: false,
         default: 100000
-    },
-    headquarters:{
-        type: String,
-        required: true
     },
     products:[
         {

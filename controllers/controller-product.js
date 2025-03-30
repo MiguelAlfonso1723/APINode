@@ -1,10 +1,14 @@
-import product from '../models/product.mjs'
+import {Product,
+        ElectronicsProduct,
+        FoodProduct,
+        AutomotiveProduct,
+        ClothingProduct} from '../models/product.mjs'
 import Company from '../models/company.mjs'
 
 async function getAll (req, res){
     try{
 
-        const result = await product.find({})
+        const result = await Product.find({})
         return res.status(200).json({"state":true, "data":result})
 
     }catch(err){
@@ -19,12 +23,31 @@ async function save(req, res){
     try{
         const company = await Company.findById(id)
         if(company){
-            const song = new product(req.body)
-            company.products.push(song)
+
+            let product = new Product(req.body)
+            switch(company.numberIndustry){
+                case 1:
+                    product = new ElectronicsProduct(req.body)
+                    break
+                case 2:
+                    product = new FoodProduct(req.body)
+                    break
+                case 3:
+                    product = new AutomotiveProduct(req.body)
+                    break
+                case 4:
+                    product = new ClothingProduct(req.body)
+                    break
+                default:
+                    console.log('No se encuentra el tipo de producto, se dejará en la clase base')
+                    break
+            }
+            
+            company.products.push(product)
 
             await company.save()
-            song.company = company
-            const result = await song.save()
+            product.company = company
+            const result = await product.save()
 
             return res.status(200).json({"state":true, "data":result}) 
         }else{
