@@ -111,3 +111,4 @@ export {
     AutomotiveProduct,
     ClothingProduct
 }
+export default Product

@@ -1,6 +1,6 @@
 import express from 'express'
 
-import {getAll, getById, save, actualize} from '../controllers/controller-company.js'
+import {getAll, getById, save, actualize, eliminate} from '../controllers/controller-company.js'
 
 const route = express.Router()
 
@@ -226,6 +226,9 @@ route.get('/:id',getById)
  *                                               
  */
 route.post('/',save)
-route.put('/:idn', actualize)
+
+route.put('/:id', actualize)
+
+route.delete('/:id', eliminate)
 
 export default route

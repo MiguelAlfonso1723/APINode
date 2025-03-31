@@ -2,6 +2,9 @@ import express from 'express'
 import {
     getAll,
     save,
+    getById,
+    eliminate,
+    actualize
 } from '../controllers/controller-product.js'
 
 const routes = express.Router()
@@ -75,6 +78,8 @@ const routes = express.Router()
  *                      example: A ocurrido un error en el servidor           
  */
 routes.get('/', getAll)
+
+routes.get('/:id', getById)
 
 /**
  * @swagger
@@ -154,5 +159,9 @@ routes.get('/', getAll)
  *                                               
  */
 routes.post('/:id', save)
+
+routes.put('/:id', actualize)
+
+routes.delete('/:id', eliminate)
 
 export default routes
