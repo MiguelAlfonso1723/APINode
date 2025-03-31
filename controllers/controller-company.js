@@ -1,4 +1,5 @@
 import Company from '../models/company.mjs'
+import Product from '../models/product.mjs'
 
 async function getAll(req,res){
    try{
@@ -14,16 +15,16 @@ async function getAll(req,res){
 
 
 
-  async function getById(req,res){
-    const {id} = req.params
-    try{
-      const result = await Company.findById(id)
-      return res.status(200).json({"state":true,"data":result})
-    }catch(err){
-      return res.status(500).json({"state":false, "error":err.message})
-    }
-    
+async function getById(req,res){
+  const {id} = req.params
+  try{
+    const result = await Company.findById(id)
+    return res.status(200).json({"state":true,"data":result})
+  }catch(err){
+    return res.status(500).json({"state":false, "error":err.message})
   }
+    
+}
 
   async function save(req,res){
     const {id, name, industry, numberIndustry, headquarters, founded, employees, anualRevenue } = req.body;
@@ -41,13 +42,50 @@ async function getAll(req,res){
   }
 
   async function actualize(req,res){
-    const {idn} = req.params
-    const {name, country} = req.body
-    return res.status(200).json({'state':true,data:{idn,name,country}})
+    const {id} = req.params
+    try{
+      const company = await Company.findById(id);
+      if(company){
+        const {id, name, industry, numberIndustry, headquarters, founded, employees, anualRevenue } = req.body;
+        
+        company.overwrite(new Company({id,name, industry, numberIndustry, headquarters, founded,employees, anualRevenue}));
+
+        const result = await company.save()
+        return res.status(200).json({'state':true,'data':result})
+      }else{
+            return res.status(404).json({"state":false, "message":"ID Company Not Found", "data":null})     
+      }
+    }catch (err){
+      return res.status(500).json({"state":false,"message":err.message})
+    }
   }
+
+  async function eliminate (req, res){
+    const {id} = req.params
+    try{
+      const company = await Company.findById(id);
+      if(company){
+
+        for(let i = 0; i < company.products.length; i++){
+          const product = await Product.findById(company.products[i].toString())
+          await product.deleteOne()
+        } 
+
+        const result = await company.deleteOne()
+        return res.status(200).json({'state':true,'data':result})
+      }else{
+            return res.status(404).json({"state":false, "message":"ID Company Not Found", "data":null})     
+      }
+    }catch (err){
+      return res.status(500).json({"state":false,"message":err.message})
+    }
+  }
+
+
   export{
     getAll,
     getById,
     save,
-    actualize
+    actualize,
+    eliminate
   }
