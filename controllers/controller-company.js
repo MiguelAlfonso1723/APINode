@@ -1,91 +1,176 @@
-import Company from '../models/company.mjs'
-import Product from '../models/product.mjs'
+import Company from "../models/company.mjs";
+import Product from "../models/product.mjs";
+import jwt from "jsonwebtoken";
 
-async function getAll(req,res){
-   try{
-      const result = await Company.find({})
+const key = process.env.SECRET;
 
-      return res.status(200).json({"state":true,"data":result})
-      //return res.status(200).json({"state":true,"data:"{"id":id,"name":name,"country":country}}) 
-    }catch(error){
-      return res.status(500).json({"state":false,"message":error.message})
-
-    }
-}
-
-
-
-async function getById(req,res){
-  const {id} = req.params
-  try{
-    const result = await Company.findById(id)
-    return res.status(200).json({"state":true,"data":result})
-  }catch(err){
-    return res.status(500).json({"state":false, "error":err.message})
-  }
+function validate(aux) {
+  let token = aux;
+  if (token != undefined) {
+    console.log(aux)
+    token = aux.split(" ")[1];
     
+    const payload = jwt.verify(token, key);
+    if (Date.now() > payload.exp) {
+      return "Session Expired";
+    } else {
+      return true;
+    }
+  } else {
+    return "The session has not been logged in or the token has not been entered.";
+  }
 }
 
-  async function save(req,res){
-    const {id, name, industry, numberIndustry, headquarters, founded, employees, anualRevenue } = req.body;
 
-    try{
-      const company = new Company({id,name, industry, numberIndustry, headquarters, founded,employees, anualRevenue})
-      const result = await company.save()
-      return res.status(200).json({'state':true,'data':result})
-      
-    }catch(error){
-      return res.status(500).json({"state":false,"message":error.message})
+async function getAll(req, res) {
+  try {
+    const token = req.headers.authorization;
+    const valid = validate(token);
+    if (valid == true) {
+      const result = await Company.find({});
 
+      return res.status(200).json({ state: true, data: result });
+      //return res.status(200).json({"state":true,"data:"{"id":id,"name":name,"country":country}})
+    } else {
+      return res.status(401).json({ error: valid });
     }
-    //return res.status(200).json({"state":true,"data":{"id":id,"name":name,"country":country}}) 
+  } catch (error) {
+    return res.status(500).json({ state: false, message: error.message });
   }
+}
 
-  async function actualize(req,res){
-    const {id} = req.params
-    try{
+async function getById(req, res) {
+  const { id } = req.params;
+  try {
+    const token = req.headers.authorization;
+    const valid = validate(token);
+    console.log(valid);
+    if (valid == true) {
+      const result = await Company.findById(id);
+      return res.status(200).json({ state: true, data: result });
+    } else {
+      return res.status(401).json({ error: valid });
+    }
+  } catch (err) {
+    return res.status(500).json({ state: false, error: err.message });
+  }
+}
+
+async function save(req, res) {
+  const {
+    id,
+    name,
+    industry,
+    numberIndustry,
+    headquarters,
+    founded,
+    employees,
+    anualRevenue,
+  } = req.body;
+
+  try {
+    const token = req.headers.authorization;
+    const valid = validate(token);
+    console.log(valid);
+    if (valid == true) {
+      const company = new Company({
+        id,
+        name,
+        industry,
+        numberIndustry,
+        headquarters,
+        founded,
+        employees,
+        anualRevenue,
+      });
+      const result = await company.save();
+      return res.status(200).json({ state: true, data: result });
+    } else {
+      return res.status(401).json({ error: valid });
+    }
+  } catch (error) {
+    return res.status(500).json({ state: false, message: error.message });
+  }
+  //return res.status(200).json({"state":true,"data":{"id":id,"name":name,"country":country}})
+}
+
+async function actualize(req, res) {
+  const { id } = req.params;
+  try {
+    const token = req.headers.authorization;
+    const valid = validate(token);
+    console.log(valid);
+    if (valid == true) {
       const company = await Company.findById(id);
-      if(company){
-        const {id, name, industry, numberIndustry, headquarters, founded, employees, anualRevenue } = req.body;
-        
-        company.overwrite(new Company({id,name, industry, numberIndustry, headquarters, founded,employees, anualRevenue}));
+      if (company) {
+        const {
+          id,
+          name,
+          industry,
+          numberIndustry,
+          headquarters,
+          founded,
+          employees,
+          anualRevenue,
+        } = req.body;
 
-        const result = await company.save()
-        return res.status(200).json({'state':true,'data':result})
-      }else{
-            return res.status(404).json({"state":false, "message":"ID Company Not Found", "data":null})     
+        company.overwrite(
+          new Company({
+            id,
+            name,
+            industry,
+            numberIndustry,
+            headquarters,
+            founded,
+            employees,
+            anualRevenue,
+          })
+        );
+
+        const result = await company.save();
+        return res.status(200).json({ state: true, data: result });
+      } else {
+        return res
+          .status(404)
+          .json({ state: false, message: "ID Company Not Found", data: null });
       }
-    }catch (err){
-      return res.status(500).json({"state":false,"message":err.message})
+    } else {
+      return res.status(401).json({ error: valid });
     }
+  } catch (err) {
+    return res.status(500).json({ state: false, message: err.message });
   }
+}
 
-  async function eliminate (req, res){
-    const {id} = req.params
-    try{
+async function eliminate(req, res) {
+  const { id } = req.params;
+  try {
+    const token = req.headers.authorization;
+    const valid = validate(token);
+    console.log(valid);
+    if (valid == true) {
       const company = await Company.findById(id);
-      if(company){
+      if (company) {
+        for (let i = 0; i < company.products.length; i++) {
+          const product = await Product.findById(
+            company.products[i].toString()
+          );
+          await product.deleteOne();
+        }
 
-        for(let i = 0; i < company.products.length; i++){
-          const product = await Product.findById(company.products[i].toString())
-          await product.deleteOne()
-        } 
-
-        const result = await company.deleteOne()
-        return res.status(200).json({'state':true,'data':result})
-      }else{
-            return res.status(404).json({"state":false, "message":"ID Company Not Found", "data":null})     
+        const result = await company.deleteOne();
+        return res.status(200).json({ state: true, data: result });
+      } else {
+        return res
+          .status(404)
+          .json({ state: false, message: "ID Company Not Found", data: null });
       }
-    }catch (err){
-      return res.status(500).json({"state":false,"message":err.message})
+    } else {
+      return res.status(401).json({ error: valid });
     }
+  } catch (err) {
+    return res.status(500).json({ state: false, message: err.message });
   }
+}
 
-
-  export{
-    getAll,
-    getById,
-    save,
-    actualize,
-    eliminate
-  }
+export { getAll, getById, save, actualize, eliminate };
