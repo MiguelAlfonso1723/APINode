@@ -19,6 +19,19 @@ const swaggerDefinition = {
     servers:[{
         url: 'http://localhost:3000',
         description: 'Development Company'
+    }],
+    components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT',
+                description: 'Ingresa el token JWT en el formato: Bearer <token>'
+            }
+        }
+    },
+    security: [{
+        bearerAuth: []
     }]
     
 }
