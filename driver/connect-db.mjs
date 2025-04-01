@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-const URL = secrets.URL
-const DB = secrets.DB
+const URL = process.env.URL
+const DB = process.env.DB
 
 try{
     await mongoose.connect(URL+DB)

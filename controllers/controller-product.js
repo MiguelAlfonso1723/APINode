@@ -8,7 +8,7 @@ import {
 import Company from "../models/company.mjs";
 import jwt from "jsonwebtoken";
 
-const key = secrets.SECRET;
+const key = process.env.SECRET;
 
 function validate(aux) {
   let token = aux;
