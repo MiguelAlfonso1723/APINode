@@ -137,6 +137,37 @@ Textil:
 - https://apinodejs-2h6b.onrender.com/product/:id - PUT. Actualiza un registro
 - https://apinodejs-2h6b.onrender.com/product/:id - DELETE. Elimina un regsitro
 
+## Usuarios
+Para poder realizar solicitudes a la API, primero se tiene que crear un usuario y despues loggearse.  
+
+### Sign Up (Creación de Usuario)
+Para crear un usuario necesita un correo y una contraseña. Cabe aclarar que el correo es unico y no se pueden registrar dos o más usuarios con el mismo correo.
+#### Schema SignUp
+```json
+{
+  user:String
+  password:String
+}
+```
+#### End - Points (Locales y Nube)
+- http://127.0.0.1:3000/signup/ - POST. Adiciona un nuevo usuario
+- https://apinodejs-2h6b.onrender.com/signup/ - POST. Adiciona un nuevo registro
+
+### Sign In (Iniciar Sesión)
+Para iniciar usuario se necesita un correo y una contraseña ya existentes. Al iniciar sesión este devuelve el token de acceso por 30 minutos, este se debe ingresar en el Authorize de Swagger para realizar las demas peticiones.
+#### Schema SignIn
+```json
+{
+  user:String
+  password:String
+}
+```
+#### End - Points (Locales)
+- http://127.0.0.1:3000/signin/ - POST. Iniciar Sesión (obtención del Token)
+- https://apinodejs-2h6b.onrender.com/signin/ - POST. Iniciar Sesión (obtención del Token)
+
+
+
 # Referencias y Links
 Para la realización del taller se hizo una investigación para mejorar la API, entre lo que se investigo y aplico fue lo siguiente:  
 - Para realizar discriminadores en el modelo del esquema Productos.  
