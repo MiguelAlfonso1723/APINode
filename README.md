@@ -138,7 +138,7 @@ Textil:
 - https://apinodejs-2h6b.onrender.com/product/:id - DELETE. Elimina un regsitro
 
 # Referencias y Links
-Para la realiación del taller se hizo una investigación para mejorar la API, entre lo se investigo y aplico fue lo siguiente:  
+Para la realización del taller se hizo una investigación para mejorar la API, entre lo que se investigo y aplico fue lo siguiente:  
 - Para realizar discriminadores en el modelo del esquema Productos.  
 Nienke, Introducción a los discriminadores de mangosta en Express.js, 2018, https://dev.to/helenasometimes/getting-started-with-mongoose-discriminators-in-expressjs--22m9.
 
