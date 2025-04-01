@@ -12,7 +12,7 @@ import './driver/connect-db.mjs'
 const app = new express()
 
 //Setters
-app.set('PORT',process.env.PORT || 4500)
+app.set('PORT',secrets.PORT || 4500)
 
 //use
 app.use(express.json())
