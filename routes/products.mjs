@@ -529,9 +529,9 @@ routes.get('/:id', getById)
  *                                  price: 45900.00
  *                                  stock: 350
  *                                  specs:
- *                                  range: 450km
- *                                  acceleration: 4.2s 0-100km/h
- *                                  battery: "85kWh"
+ *                                      range: 450km
+ *                                      acceleration: 4.2s 0-100km/h
+ *                                      battery: "85kWh"
  *                                  warrantyYears: 3
  *                                  modelYear: 2024  
  *                                          
@@ -750,9 +750,9 @@ routes.post('/:id', save)
  *                                  price: 45900.00
  *                                  stock: 350
  *                                  specs:
- *                                  range: 450km
- *                                  acceleration: 4.2s 0-100km/h
- *                                  battery: "85kWh"
+ *                                      range: 450km
+ *                                      acceleration: 4.2s 0-100km/h
+ *                                      battery: "85kWh"
  *                                  warrantyYears: 3
  *                                  modelYear: 2024  
  *                                          

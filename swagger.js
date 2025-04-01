@@ -29,6 +29,7 @@ const swaggerDefinition = {
         description: "Gestión y administración de productos pertenecientes a compañías varias"
     }],
     servers:[{
+        //url: 'http://localhost:3000',
         url: 'https://apinodejs-2h6b.onrender.com',
         description: 'Development API Companies and Products'
     }],
