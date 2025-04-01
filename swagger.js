@@ -16,9 +16,21 @@ const swaggerDefinition = {
             url: 'https://github.com/MiguelAlfonso1723'
         }
     },
+    tags:[{
+        name: "Loggin Controller",
+        description: "Creación de usuario e inicio de sesión"
+    },
+    {
+        name: "Company Controller",
+        description: "Gestión y administración de compañías varias"
+    },
+    {
+        name: "Product Controller",
+        description: "Gestión y administración de productos pertenecientes a compañías varias"
+    }],
     servers:[{
         url: 'http://localhost:3000',
-        description: 'Development Company'
+        description: 'Development API Companies and Products'
     }],
     components: {
         securitySchemes: {

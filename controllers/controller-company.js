@@ -7,7 +7,6 @@ const key = process.env.SECRET;
 function validate(aux) {
   let token = aux;
   if (token != undefined) {
-    console.log(aux)
     token = aux.split(" ")[1];
     
     const payload = jwt.verify(token, key);
@@ -32,7 +31,7 @@ async function getAll(req, res) {
       return res.status(200).json({ state: true, data: result });
       //return res.status(200).json({"state":true,"data:"{"id":id,"name":name,"country":country}})
     } else {
-      return res.status(401).json({ error: valid });
+      return res.status(401).json({ state: false, error: valid });
     }
   } catch (error) {
     return res.status(500).json({ state: false, message: error.message });
@@ -44,12 +43,11 @@ async function getById(req, res) {
   try {
     const token = req.headers.authorization;
     const valid = validate(token);
-    console.log(valid);
     if (valid == true) {
       const result = await Company.findById(id);
       return res.status(200).json({ state: true, data: result });
     } else {
-      return res.status(401).json({ error: valid });
+      return res.status(401).json({ state: false, error: valid });
     }
   } catch (err) {
     return res.status(500).json({ state: false, error: err.message });
@@ -71,7 +69,6 @@ async function save(req, res) {
   try {
     const token = req.headers.authorization;
     const valid = validate(token);
-    console.log(valid);
     if (valid == true) {
       const company = new Company({
         id,
@@ -84,9 +81,9 @@ async function save(req, res) {
         anualRevenue,
       });
       const result = await company.save();
-      return res.status(200).json({ state: true, data: result });
+      return res.status(201).json({ state: true, data: result });
     } else {
-      return res.status(401).json({ error: valid });
+      return res.status(401).json({ state: false, error: valid });
     }
   } catch (error) {
     return res.status(500).json({ state: false, message: error.message });
@@ -99,7 +96,6 @@ async function actualize(req, res) {
   try {
     const token = req.headers.authorization;
     const valid = validate(token);
-    console.log(valid);
     if (valid == true) {
       const company = await Company.findById(id);
       if (company) {
@@ -130,12 +126,10 @@ async function actualize(req, res) {
         const result = await company.save();
         return res.status(200).json({ state: true, data: result });
       } else {
-        return res
-          .status(404)
-          .json({ state: false, message: "ID Company Not Found", data: null });
+        return res.status(404).json({ state: false, message: "ID Company Not Found"});
       }
     } else {
-      return res.status(401).json({ error: valid });
+      return res.status(401).json({ state: false, message: "The company can't be actualizate", error: valid });
     }
   } catch (err) {
     return res.status(500).json({ state: false, message: err.message });
@@ -147,7 +141,6 @@ async function eliminate(req, res) {
   try {
     const token = req.headers.authorization;
     const valid = validate(token);
-    console.log(valid);
     if (valid == true) {
       const company = await Company.findById(id);
       if (company) {
@@ -161,12 +154,10 @@ async function eliminate(req, res) {
         const result = await company.deleteOne();
         return res.status(200).json({ state: true, data: result });
       } else {
-        return res
-          .status(404)
-          .json({ state: false, message: "ID Company Not Found", data: null });
+        return res.status(404).json({ state: false, message: "ID Company Not Found" });
       }
     } else {
-      return res.status(401).json({ error: valid });
+      return res.status(401).json({ state: false, error: valid });
     }
   } catch (err) {
     return res.status(500).json({ state: false, message: err.message });

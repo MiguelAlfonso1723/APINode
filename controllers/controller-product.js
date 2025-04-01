@@ -13,7 +13,6 @@ const key = process.env.SECRET;
 function validate(aux) {
   let token = aux;
   if (token != undefined) {
-    console.log(aux);
     token = aux.split(" ")[1];
 
     const payload = jwt.verify(token, key);
@@ -93,11 +92,9 @@ async function save(req, res) {
         product.company = company;
         const result = await product.save();
 
-        return res.status(200).json({ state: true, data: result });
+        return res.status(201).json({ state: true, data: result });
       } else {
-        return res
-          .status(404)
-          .json({ state: false, message: "ID Company Not Found", data: null });
+        return res.status(404).json({ state: false, message: "ID Company Not Found", data: null });
       }
     } else {
       return res.status(401).json({ error: valid });
@@ -176,7 +173,7 @@ async function actualize(req, res) {
 
         const result = await product.save();
 
-        return res.status(200).json({ state: true, data: result });
+        return res.status(201).json({ state: true, data: result });
       } else {
         return res
           .status(404)
